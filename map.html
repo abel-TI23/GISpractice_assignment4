@@ -98,25 +98,28 @@
         <div id="map"></div>
         <div id="coordinates" class="coordinates">Click on map to see coordinates</div>
         
-        <div class="info-panel">
+                <div class="info-panel">
             <div class="legend">
                 <h4>Map Features</h4>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #e74c3c; width: 10px; height: 10px; border-radius: 50%;"></div>
-                    <span>Important Locations (Markers)</span>
+                    <span>🏠 Home Residence</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background: #27ae60;"></div>
-                    <span>Walking Route (Polyline)</span>
+                    <div class="legend-color" style="background: #9b59b6; width: 10px; height: 10px; border-radius: 50%;"></div>
+                    <span>🎓 Educational Facilities</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(155, 89, 182, 0.5);"></div>
-                    <span>Campus Area (Polygon)</span>
+                    <div class="legend-color" style="background: #27ae60; width: 20px; height: 3px;"></div>
+                    <span>🚶 Walking Routes</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background: #f39c12; width: 10px; height: 10px; border-radius: 50%;"></div>
-                    <span>Districts & Administrative Areas</span>
+                    <div class="legend-color" style="background: #f39c12; width: 20px; height: 3px;"></div>
+                    <span>🗺️ District Boundaries</span>
                 </div>
+                <p style="margin-top: 15px; font-size: 12px; color: #666;">
+                    <strong>💡 Tip:</strong> Hover over markers and areas for tooltips. Click for detailed information!
+                </p>
             </div>
         </div>
     </div>
@@ -141,29 +144,184 @@
 
         // Overlay Layers
         
-        // 1. Markers Layer
+        // 1. Markers Layer with Enhanced Interactivity
         var markersLayer = L.layerGroup();
         var markerData = [
-            {lat: -6.905526632682002, lng: 106.87460693244734, popup: '🏠 Home Residence', icon: 'home'},
-            {lat: -6.905371637991479, lng: 106.87354867030655, popup: '🎓 NusaPutra Campus', icon: 'school'},
-            {lat: -6.902595997614433, lng: 106.88374813225745, popup: '🍞 Vos Bakery', icon: 'store'},
-            {lat: -6.902816971435422, lng: 106.8825460640145, popup: '🏥 Emergency Medical Clinic', icon: 'hospital'},
-            {lat: -6.9192497, lng: 106.9289142, popup: '🏛️ Sukabumi City Hall', icon: 'government'}
+            {
+                lat: -6.905526632682002, 
+                lng: 106.87460693244734, 
+                title: 'Home Residence',
+                icon: 'home',
+                tooltip: '🏠 My Home',
+                description: 'This is my home residence in Sukabumi. A peaceful neighborhood with easy access to campus and local amenities.',
+                details: {
+                    type: 'Residential',
+                    address: 'Jl. Residence Area, Sukabumi',
+                    distance: '200m from campus',
+                    amenities: ['Parking', 'Internet', 'Security']
+                }
+            },
+            {
+                lat: -6.905371637991479, 
+                lng: 106.87354867030655, 
+                title: 'NusaPutra University Campus',
+                icon: 'school',
+                tooltip: '🎓 NusaPutra Campus',
+                description: 'NusaPutra University - Main campus building. Offering quality education in various fields including Information Technology.',
+                details: {
+                    type: 'Educational Institution',
+                    address: 'Jl. Raya Cibolang Kaler No.21, Sukabumi',
+                    established: '1990',
+                    programs: ['IT', 'Engineering', 'Business', 'Design']
+                }
+            },
+            {
+                lat: -6.902595997614433, 
+                lng: 106.88374813225745, 
+                title: 'Vos Bakery',
+                icon: 'store',
+                tooltip: '🍞 Vos Bakery Shop',
+                description: 'Popular local bakery known for fresh bread and pastries. Perfect spot for breakfast or quick snacks.',
+                details: {
+                    type: 'Food & Beverage',
+                    address: 'Jl. Bakery Street, Sukabumi',
+                    hours: '06:00 AM - 09:00 PM',
+                    specialties: ['Fresh Bread', 'Cakes', 'Pastries', 'Coffee']
+                }
+            },
+            {
+                lat: -6.902816971435422, 
+                lng: 106.8825460640145, 
+                title: 'Emergency Medical Clinic',
+                icon: 'hospital',
+                tooltip: '🏥 24/7 Medical Clinic',
+                description: 'Emergency medical facility providing 24/7 healthcare services. Equipped with modern medical equipment and experienced staff.',
+                details: {
+                    type: 'Healthcare Facility',
+                    address: 'Jl. Medical Center, Sukabumi',
+                    hours: '24/7 Emergency Services',
+                    services: ['Emergency Care', 'General Consultation', 'Pharmacy', 'Laboratory']
+                }
+            },
+            {
+                lat: -6.9192497, 
+                lng: 106.9289142, 
+                title: 'Sukabumi City Hall',
+                icon: 'government',
+                tooltip: '🏛️ City Government Office',
+                description: 'Sukabumi City Hall - Main administrative building for city government services and public administration.',
+                details: {
+                    type: 'Government Office',
+                    address: 'Jl. Bhayangkara No.10, Sukabumi',
+                    hours: 'Mon-Fri: 08:00 AM - 04:00 PM',
+                    services: ['Civil Registry', 'Permits', 'Public Services', 'Information Center']
+                }
+            }
         ];
 
-        // Custom marker icons
+        // Enhanced Custom marker icons with pulse animation
         var customIcons = {
-            home: L.divIcon({className: 'custom-icon', html: '🏠', iconSize: [30, 30]}),
-            school: L.divIcon({className: 'custom-icon', html: '🎓', iconSize: [30, 30]}),
-            store: L.divIcon({className: 'custom-icon', html: '🍞', iconSize: [30, 30]}),
-            hospital: L.divIcon({className: 'custom-icon', html: '🏥', iconSize: [30, 30]}),
-            government: L.divIcon({className: 'custom-icon', html: '🏛️', iconSize: [30, 30]})
+            home: L.divIcon({className: 'custom-icon home-icon', html: '🏠', iconSize: [35, 35]}),
+            school: L.divIcon({className: 'custom-icon school-icon', html: '🎓', iconSize: [35, 35]}),
+            store: L.divIcon({className: 'custom-icon store-icon', html: '🍞', iconSize: [35, 35]}),
+            hospital: L.divIcon({className: 'custom-icon hospital-icon', html: '🏥', iconSize: [35, 35]}),
+            government: L.divIcon({className: 'custom-icon government-icon', html: '🏛️', iconSize: [35, 35]})
         };
 
+        // Create markers with enhanced popups and tooltips
         markerData.forEach(function(item) {
+            // Create detailed popup content with interactive HTML
+            var popupContent = `
+                <div class="custom-popup">
+                    <h3 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 16px; border-bottom: 2px solid #3498db; padding-bottom: 5px;">
+                        ${item.title}
+                    </h3>
+                    <p style="margin: 5px 0; font-size: 13px; color: #555;">
+                        ${item.description}
+                    </p>
+                    <div style="margin-top: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                        <strong style="color: #2c3e50;">Details:</strong>
+                        <ul style="margin: 5px 0; padding-left: 20px; font-size: 12px;">
+                            <li><strong>Type:</strong> ${item.details.type}</li>
+                            <li><strong>Address:</strong> ${item.details.address}</li>
+                            <li><strong>${item.details.hours ? 'Hours' : item.details.established ? 'Established' : item.details.distance ? 'Distance' : 'Info'}:</strong> 
+                                ${item.details.hours || item.details.established || item.details.distance || 'N/A'}
+                            </li>
+                        </ul>
+                    </div>
+                    ${item.details.amenities || item.details.programs || item.details.specialties || item.details.services ? `
+                    <div style="margin-top: 8px;">
+                        <strong style="color: #2c3e50; font-size: 12px;">
+                            ${item.details.amenities ? 'Amenities' : item.details.programs ? 'Programs' : item.details.specialties ? 'Specialties' : 'Services'}:
+                        </strong>
+                        <div style="margin-top: 5px;">
+                            ${(item.details.amenities || item.details.programs || item.details.specialties || item.details.services).map(function(feature) {
+                                return `<span style="display: inline-block; background: #3498db; color: white; padding: 2px 8px; margin: 2px; border-radius: 3px; font-size: 11px;">${feature}</span>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                    <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid #ddd; font-size: 11px; color: #666;">
+                        <strong>📍 Coordinates:</strong> ${item.lat.toFixed(6)}, ${item.lng.toFixed(6)}
+                        <br>
+                        <button onclick="alert('Directions feature coming soon!')" style="margin-top: 5px; background: #27ae60; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 11px;">
+                            🗺️ Get Directions
+                        </button>
+                        <button onclick="alert('Added to favorites!')" style="margin-top: 5px; background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 11px; margin-left: 5px;">
+                            ⭐ Add to Favorites
+                        </button>
+                    </div>
+                </div>
+            `;
+
             var marker = L.marker([item.lat, item.lng], {
-                icon: customIcons[item.icon] || L.marker().options.icon
-            }).bindPopup(item.popup);
+                icon: customIcons[item.icon] || L.marker().options.icon,
+                riseOnHover: true
+            })
+            .bindPopup(popupContent, {
+                maxWidth: 300,
+                className: 'custom-popup-container'
+            })
+            .bindTooltip(item.tooltip, {
+                permanent: false,
+                direction: 'top',
+                offset: [0, -15],
+                opacity: 0.9,
+                className: 'custom-tooltip'
+            });
+
+            // Add interactive events
+            marker.on('mouseover', function(e) {
+                this.openTooltip();
+                // Add pulse effect without interfering with positioning
+                if (e.target._icon) {
+                    e.target._icon.classList.add('marker-hover');
+                }
+            });
+
+            marker.on('mouseout', function(e) {
+                // Remove pulse effect
+                if (e.target._icon) {
+                    e.target._icon.classList.remove('marker-hover');
+                }
+            });
+
+            marker.on('click', function(e) {
+                // Zoom to marker on click
+                map.setView(e.latlng, 17, {
+                    animate: true,
+                    duration: 1
+                });
+                
+                // Add click animation
+                if (e.target._icon) {
+                    e.target._icon.classList.add('marker-bounce');
+                    setTimeout(function() {
+                        e.target._icon.classList.remove('marker-bounce');
+                    }, 500);
+                }
+            });
+
             markersLayer.addLayer(marker);
         });
 
@@ -180,21 +338,73 @@
         var mainRoute = L.polyline(walkingRoute, {
             color: '#27ae60',
             weight: 4,
-            opacity: 0.8
-        }).bindPopup('🚶 Main Walking Route: Bakery → Campus → Home');
+            opacity: 0.8,
+            smoothFactor: 1
+        }).bindPopup(`
+            <div style="font-family: Arial, sans-serif;">
+                <h4 style="margin: 0 0 8px 0; color: #27ae60;">🚶 Main Walking Route</h4>
+                <p style="margin: 5px 0; font-size: 13px;"><strong>Route:</strong> Bakery → Campus → Home</p>
+                <p style="margin: 5px 0; font-size: 13px;"><strong>Distance:</strong> ~2.3 km</p>
+                <p style="margin: 5px 0; font-size: 13px;"><strong>Est. Time:</strong> 25-30 minutes</p>
+                <p style="margin: 5px 0; font-size: 12px; color: #666;">This is my daily commute route through Sukabumi.</p>
+            </div>
+        `).bindTooltip('🚶 Daily Walking Route', {
+            sticky: true
+        });
         
-        // Secondary route (example: to city hall)
+        // Add hover effects to route
+        mainRoute.on('mouseover', function(e) {
+            this.setStyle({
+                weight: 6,
+                opacity: 1
+            });
+        });
+        
+        mainRoute.on('mouseout', function(e) {
+            this.setStyle({
+                weight: 4,
+                opacity: 0.8
+            });
+        });
+        
+        // Secondary route (to City Hall)
         var secondaryRoute = [
             [-6.905526632682002, 106.87460693244734], // Home
-            [-6.907000, 106.880000]                   // City Hall
+            [-6.910000, 106.890000],                   // Intermediate point
+            [-6.9192497, 106.9289142]                  // City Hall
         ];
         
         var cityRoute = L.polyline(secondaryRoute, {
             color: '#3498db',
             weight: 3,
             opacity: 0.7,
-            dashArray: '10, 10'
-        }).bindPopup('🏛️ Route to City Hall');
+            dashArray: '10, 10',
+            smoothFactor: 1
+        }).bindPopup(`
+            <div style="font-family: Arial, sans-serif;">
+                <h4 style="margin: 0 0 8px 0; color: #3498db;">🏛️ Route to City Hall</h4>
+                <p style="margin: 5px 0; font-size: 13px;"><strong>Route:</strong> Home → City Hall</p>
+                <p style="margin: 5px 0; font-size: 13px;"><strong>Distance:</strong> ~3.8 km</p>
+                <p style="margin: 5px 0; font-size: 13px;"><strong>Est. Time:</strong> 40-45 minutes</p>
+                <p style="margin: 5px 0; font-size: 12px; color: #666;">Occasional route for administrative tasks.</p>
+            </div>
+        `).bindTooltip('🏛️ City Hall Route', {
+            sticky: true
+        });
+        
+        cityRoute.on('mouseover', function(e) {
+            this.setStyle({
+                weight: 5,
+                opacity: 1
+            });
+        });
+        
+        cityRoute.on('mouseout', function(e) {
+            this.setStyle({
+                weight: 3,
+                opacity: 0.7
+            });
+        });
         
         polylinesLayer.addLayer(mainRoute);
         polylinesLayer.addLayer(cityRoute);
@@ -215,7 +425,34 @@
             fillColor: '#e8d5f2',
             fillOpacity: 0.5,
             weight: 2
-        }).bindPopup('🎓 NusaPutra Campus Area');
+        }).bindPopup(`
+            <div style="font-family: Arial, sans-serif;">
+                <h4 style="margin: 0 0 8px 0; color: #9b59b6;">🎓 NusaPutra Campus Area</h4>
+                <p style="margin: 5px 0; font-size: 13px;">Main university campus with multiple buildings and facilities.</p>
+                <div style="margin-top: 8px; background: #f8f9fa; padding: 8px; border-radius: 5px;">
+                    <p style="margin: 3px 0; font-size: 12px;"><strong>Area:</strong> ~15,000 m²</p>
+                    <p style="margin: 3px 0; font-size: 12px;"><strong>Buildings:</strong> 5 main buildings</p>
+                    <p style="margin: 3px 0; font-size: 12px;"><strong>Facilities:</strong> Library, Labs, Cafeteria</p>
+                </div>
+            </div>
+        `).bindTooltip('🎓 Campus Area', {
+            sticky: true
+        });
+        
+        // Add hover effects
+        campusPolygon.on('mouseover', function(e) {
+            this.setStyle({
+                fillOpacity: 0.7,
+                weight: 3
+            });
+        });
+        
+        campusPolygon.on('mouseout', function(e) {
+            this.setStyle({
+                fillOpacity: 0.5,
+                weight: 2
+            });
+        });
         
         // Residential area
         var residentialArea = [
@@ -230,7 +467,33 @@
             fillColor: '#f8e6d3',
             fillOpacity: 0.4,
             weight: 2
-        }).bindPopup('🏘️ Residential Area');
+        }).bindPopup(`
+            <div style="font-family: Arial, sans-serif;">
+                <h4 style="margin: 0 0 8px 0; color: #e67e22;">🏘️ Residential Area</h4>
+                <p style="margin: 5px 0; font-size: 13px;">Peaceful neighborhood with family homes and local amenities.</p>
+                <div style="margin-top: 8px; background: #f8f9fa; padding: 8px; border-radius: 5px;">
+                    <p style="margin: 3px 0; font-size: 12px;"><strong>Type:</strong> Mixed residential</p>
+                    <p style="margin: 3px 0; font-size: 12px;"><strong>Population:</strong> ~5,000 residents</p>
+                    <p style="margin: 3px 0; font-size: 12px;"><strong>Amenities:</strong> Schools, Parks, Shops</p>
+                </div>
+            </div>
+        `).bindTooltip('🏘️ Residential Area', {
+            sticky: true
+        });
+        
+        residentialPolygon.on('mouseover', function(e) {
+            this.setStyle({
+                fillOpacity: 0.6,
+                weight: 3
+            });
+        });
+        
+        residentialPolygon.on('mouseout', function(e) {
+            this.setStyle({
+                fillOpacity: 0.4,
+                weight: 2
+            });
+        });
         
         polygonsLayer.addLayer(campusPolygon);
         polygonsLayer.addLayer(residentialPolygon);
@@ -273,22 +536,11 @@
                             [106.870000, -6.900000]
                         ]]
                     }
-                },
-                {
-                    "type": "Feature",
-                    "properties": {
-                        "name": "Emergency Medical Center",
-                        "type": "medical_facility"
-                    },
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [106.8825460640145, -6.902816971435422]
-                    }
                 }
             ]
         };
 
-        // Add GeoJSON layer
+        // Add GeoJSON layer with enhanced interactivity
         var geoJsonLayer = L.geoJSON(sukabumiBoundaries, {
             style: function(feature) {
                 if (feature.geometry.type === 'Polygon') {
@@ -301,27 +553,41 @@
                     };
                 }
             },
-            pointToLayer: function(feature, latlng) {
-                if (feature.properties.type === 'medical_facility') {
-                    return L.marker(latlng, {
-                        icon: L.divIcon({
-                            className: 'custom-icon',
-                            html: '🏥',
-                            iconSize: [25, 25]
-                        })
-                    });
-                }
-            },
             onEachFeature: function(feature, layer) {
                 if (feature.properties && feature.properties.name) {
-                    var popupContent = "<strong>" + feature.properties.name + "</strong>";
-                    if (feature.properties.type) {
-                        popupContent += "<br>Type: " + feature.properties.type;
-                    }
-                    if (feature.properties.population) {
-                        popupContent += "<br>Population: " + feature.properties.population;
-                    }
+                    // Enhanced popup content with HTML styling
+                    var popupContent = `
+                        <div style="font-family: Arial, sans-serif;">
+                            <h4 style="margin: 0 0 8px 0; color: #f39c12;">${feature.properties.name}</h4>
+                            <div style="background: #f8f9fa; padding: 8px; border-radius: 5px;">
+                                ${feature.properties.type ? `<p style="margin: 3px 0; font-size: 12px;"><strong>Type:</strong> ${feature.properties.type}</p>` : ''}
+                                ${feature.properties.population ? `<p style="margin: 3px 0; font-size: 12px;"><strong>Population:</strong> ${feature.properties.population}</p>` : ''}
+                            </div>
+                        </div>
+                    `;
+                    
                     layer.bindPopup(popupContent);
+                    layer.bindTooltip(feature.properties.name, {
+                        sticky: true,
+                        className: 'custom-tooltip'
+                    });
+                    
+                    // Add hover effects for polygons
+                    if (feature.geometry.type === 'Polygon') {
+                        layer.on('mouseover', function(e) {
+                            this.setStyle({
+                                fillOpacity: 0.5,
+                                weight: 3
+                            });
+                        });
+                        
+                        layer.on('mouseout', function(e) {
+                            this.setStyle({
+                                fillOpacity: 0.3,
+                                weight: 2
+                            });
+                        });
+                    }
                 }
             }
         });
@@ -365,7 +631,7 @@
             coordsDiv.innerHTML = `📍 Coordinates: ${lat}, ${lng}`;
         });
 
-        // Custom CSS for icons
+        // Custom CSS for icons and animations
         var style = document.createElement('style');
         style.textContent = `
             .custom-icon {
@@ -373,19 +639,114 @@
                 border-radius: 50%;
                 border: 2px solid #333;
                 text-align: center;
-                line-height: 26px;
-                font-size: 16px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                line-height: 30px;
+                font-size: 18px;
+                box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+                cursor: pointer;
+                /* Remove transition from base to avoid conflicts */
             }
+            
+            .marker-hover {
+                box-shadow: 0 5px 15px rgba(0,0,0,0.5) !important;
+                /* Simple scale without infinite animation - stops blipping */
+                transform: scale(1.1) !important;
+                transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+            }
+            
+            .marker-bounce {
+                animation: bounce 0.5s ease !important;
+            }
+            
+            .home-icon {
+                border-color: #e74c3c;
+                background: linear-gradient(135deg, #fff, #ffecec);
+            }
+            
+            .school-icon {
+                border-color: #9b59b6;
+                background: linear-gradient(135deg, #fff, #f3e9ff);
+            }
+            
+            .store-icon {
+                border-color: #f39c12;
+                background: linear-gradient(135deg, #fff, #fff4e6);
+            }
+            
+            .hospital-icon {
+                border-color: #27ae60;
+                background: linear-gradient(135deg, #fff, #e8f8f5);
+            }
+            
+            .government-icon {
+                border-color: #3498db;
+                background: linear-gradient(135deg, #fff, #ebf5fb);
+            }
+            
+            @keyframes bounce {
+                0%, 20%, 50%, 80%, 100% { 
+                    transform: translateY(0); 
+                }
+                40% { 
+                    transform: translateY(-15px); 
+                }
+                60% { 
+                    transform: translateY(-7px); 
+                }
+            }
+            
+            /* Removed problematic pulse animation with translateX */
             
             .leaflet-control-layers {
-                max-height: 300px;
+                max-height: 400px;
                 overflow-y: auto;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.2);
             }
             
-            .leaflet-popup-content {
+            .leaflet-control-layers-expanded {
+                padding: 10px;
+            }
+            
+            .custom-popup-container .leaflet-popup-content-wrapper {
+                border-radius: 8px;
+                box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+            }
+            
+            .custom-popup-container .leaflet-popup-content {
+                margin: 15px;
                 font-size: 14px;
-                line-height: 1.4;
+                line-height: 1.5;
+            }
+            
+            .custom-tooltip {
+                background: rgba(44, 62, 80, 0.9);
+                border: none;
+                border-radius: 4px;
+                color: white;
+                font-weight: bold;
+                padding: 5px 10px;
+                font-size: 12px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            }
+            
+            .custom-popup button {
+                transition: all 0.3s ease;
+            }
+            
+            .custom-popup button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            }
+            
+            .custom-popup button:active {
+                transform: translateY(0);
+            }
+            
+            /* Additional fix for Leaflet marker positioning */
+            .leaflet-marker-icon.custom-icon {
+                margin-left: -17.5px !important;
+                margin-top: -17.5px !important;
             }
         `;
         document.head.appendChild(style);
